@@ -4,17 +4,76 @@
             TodoList
         </mat-card-title>
         <mat-card-content>
-            <mat-form-field>
-                <mat-label>Add Todo</mat-label>
-                <mat-icon matPrefix style="margin-right: 5px">apps</mat-icon>
-                <input required [ngModel]="newTodo" matInput placeholder="Add todo...">
-                <mat-hint>Add your todo item and press 'Enter'</mat-hint>
-            </mat-form-field>
-            <mat-selection-list>
-                <mat-list-option *ngFor="let todo of todos">
-                    {{ todo.title }}
-                </mat-list-option>
-            </mat-selection-list>
+            <div style="margin: 10px 0; padding: 0 10px;">
+                <mat-form-field style="width: 100%;">
+                    <mat-error *ngIf="!newTodo">Todo is required</mat-error>
+                    <mat-label>Add Todo</mat-label>
+                    <mat-icon matPrefix style="margin-right: 5px;">apps</mat-icon>
+                    <mat-icon matSuffix (click)="addTodo()"
+                        matTooltip="Add todo" matTooltipPosition="above"
+                        style="cursor: pointer; color: #03A9F4">add_box</mat-icon>
+                    <input (keyup.enter)="addTodo()" required [(ngModel)]="newTodo" matInput placeholder="Add todo...">
+                    <mat-hint>Add your todo item and press 'Enter' or click 'Plus' icon</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <mat-action-list dense style="margin-bottom: 10px;">
+                <mat-list-item *ngFor="let todo of todos; let i = index">
+                    <mat-icon mat-list-icon [ngClass]="{'is-complete': todo.completed }">check_circle</mat-icon>                    
+                    <mat-icon mat-list-icon>assistant_photo</mat-icon>
+                    <h4 mat-line>{{todo.title}}</h4>
+                    <p mat-line><i>13.04.2019</i></p>
+                    <mat-checkbox matTooltip="Mark as completed" 
+                        matTooltipPosition="above" color="primary"
+                        (change)="markAsCompleted(todo)"></mat-checkbox>
+                    <button mat-icon-button matTooltip="Delete todo"
+                        style="margin-left: 10px"
+                        matTooltipPosition="above">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <mat-divider *ngIf="i !== todos.length - 1"></mat-divider>
+                </mat-list-item>
+            </mat-action-list>
+
+            <div class="mat-elevation-z4">
+                <table mat-table matSort [dataSource]="todos" style="width: 100%">
+                    <!-- Checkbox Column -->
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                        <td mat-cell *matCellDef="let todo"> {{ todo.id }} </td>
+                        <td mat-footer-cell *matFooterCellDef> {{ todos.length }} </td>
+                    </ng-container>
+                
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="title">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Todo</th>
+                        <td mat-cell *matCellDef="let todo"> {{ todo.title }} </td>
+                    </ng-container>
+                
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
         </mat-card-content>
     </mat-card>
 </div>

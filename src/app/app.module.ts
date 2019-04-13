@@ -10,7 +10,12 @@ import {
   MatCardModule,
   MatFormFieldModule,
   MatInputModule,
-  MatListModule
+  MatListModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSnackBarModule,
+  MatTooltipModule,
+  MatCheckboxModule
 } from '@angular/material'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,7 +44,12 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatListModule
+    MatListModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSnackBarModule,
+    MatTooltipModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
