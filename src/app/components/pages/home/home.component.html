@@ -1,0 +1,20 @@
+<div>
+    <mat-card>
+        <mat-card-title>
+            TodoList
+        </mat-card-title>
+        <mat-card-content>
+            <mat-form-field>
+                <mat-label>Add Todo</mat-label>
+                <mat-icon matPrefix style="margin-right: 5px">apps</mat-icon>
+                <input required [ngModel]="newTodo" matInput placeholder="Add todo...">
+                <mat-hint>Add your todo item and press 'Enter'</mat-hint>
+            </mat-form-field>
+            <mat-selection-list>
+                <mat-list-option *ngFor="let todo of todos">
+                    {{ todo.title }}
+                </mat-list-option>
+            </mat-selection-list>
+        </mat-card-content>
+    </mat-card>
+</div>
